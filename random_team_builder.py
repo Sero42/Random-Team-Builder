@@ -1,70 +1,70 @@
 import random
 import sys
 
-def Einzelnamen(list_of_names, sampling):
+def single_name(list_of_names, sampling):
     for c in range(len(list_of_names)):
       print(sampling[c])
-      print('Darf es noch ein Name sein (1), oder möchtest Du das Programm beenden (2)?')
-      Entscheidung = input()
-      if Entscheidung == 1:
-          Einzelnamen(list_of_names, sampling)
-      if Entscheidung == '2':
-          print('Möchtest du den Stand bis jetzt speichern (1), die ganze Liste speichern (2) oder einfach nur beenden (3)?')
-          endwunsch = input()
-          if endwunsch == '1':
-              f = open(str(klasse) + "einzel.txt", "w")
+      print('One more name? (1) Or exit? (2)')
+      decision = input()
+      if decision == 1:
+          single_name(list_of_names, sampling)
+      if decision == '2':
+          print('Do you want to save the current situation (1), the whole randomized list of names (2) or just exit (3)?')
+          exit_decision = input()
+          if exit_decision == '1':
+              f = open(str(group) + "single.txt", "w")
               f.write(str(sampling[(c + 1):(len(list_of_names))]))
               f.close()
               sys.exit()
-          if endwunsch == '2':
-              f = open(str(klasse) + "einzel.txt", "w")
+          if exit_decision == '2':
+              f = open(str(group) + "single.txt", "w")
               f.write(str(sampling))
               f.close()
               sys.exit()
-          if endwunsch == '3':
+          if exit_decision == '3':
               sys.exit()
 
-def alte_Einzelnamen():
-    with open(str(klasse) + 'einzel.txt', 'r') as f:
-        altes_sample = f.read()
-        altes_sample = altes_sample.replace("[", "")
-        altes_sample = altes_sample.replace("]", "")
-        altes_sample = altes_sample.replace("'", "")
-        altes_sample = altes_sample.split(",")
-    for c in range(len(altes_sample)):
-      print(altes_sample[c])
-      print('Darf es noch ein Name sein (1), oder möchtest Du das Programm beenden (2)?')
-      Entscheidung = input()
-      if Entscheidung == 1:
-          alte_Einzelnamen()
-      if Entscheidung == '2':
-          print('Möchtest du den Stand bis jetzt speichern (1), den vorherigen Stand speichern (2) oder einfach nur beenden (3)?')
-          endwunsch = input()
-          if endwunsch == '1':
-              f = open(str(klasse) + "einzel.txt", "w")
-              f.write(str(altes_sample[(c + 1):(len(altes_sample))]))
+def single_names_old():
+    with open(str(group) + 'single.txt', 'r') as f:
+        old_sample = f.read()
+        old_sample = old_sample.replace("[", "")
+        old_sample = old_sample.replace("]", "")
+        old_sample = old_sample.replace("'", "")
+        old_sample = old_sample.split(",")
+    for c in range(len(old_sample)):
+      print(old_sample[c])
+      print('One more name (1), or exit (2)?')
+      decision = input()
+      if decision == 1:
+          single_names_old()
+      if decision == '2':
+          print('Would you like to save the current state (1), the previous one (2) or just exit (3)?')
+          exit_decision = input()
+          if exit_decision == '1':
+              f = open(str(group) + "single.txt", "w")
+              f.write(str(old_sample[(c + 1):(len(old_sample))]))
               f.close()
               sys.exit()
-          if endwunsch == '2':
-              f = open(str(klasse) + "einzel.txt", "w")
-              f.write(str(altes_sample))
+          if exit_decision == '2':
+              f = open(str(group) + "single.txt", "w")
+              f.write(str(old_sample))
               f.close()
               sys.exit()
-          if endwunsch == '3':
+          if exit_decision == '3':
               sys.exit()
 
-def alte_Gruppen():
-    with open(str(klasse) + 'gruppen.txt', 'r') as file:
+def old_groups():
+    with open(str(group) + 'groups.txt', 'r') as file:
         for line in file:
             print(line)
     input()
     sys.exit()
 
-def gruppenEnde(dicts):
-    print('Möchtest du die Gruppen speichern (1) oder einfach nur beenden (2)?')
-    beendigungsart = input()
-    if beendigungsart == '1':
-        f = open(str(klasse) + "gruppen.txt", "w")
+def groups_exit(dicts):
+    print('Would you like to save groups (1) or just exit (2)?')
+    decision = input()
+    if decision == '1':
+        f = open(str(group) + "groups.txt", "w")
         f.write(str('\n'.join("{}: {}".format(k, v) for k, v in dicts.items())))
         f.close()
         sys.exit()
@@ -74,59 +74,64 @@ def gruppenEnde(dicts):
 
 
 
-print('Um welche Klasse geht es?')
-klasse = input().lower()
+print('What group is it about?')
+group = input().lower()
 
-list_of_names = open(str(klasse) + '.txt', encoding='utf-8').read().splitlines()
+list_of_names = open(str(group) + '.txt', encoding='utf-8').read().splitlines()
 
 sampling = random.sample(list_of_names, k=len(list_of_names))
 
 
-print('Moechtest du Einzelnamen (1) oder Gruppen (2) angezeigt bekommen?')
-einzelnamen_oder_gruppen = input()
+print('Would you like to display single names (1) or groups (2)?')
+decision = input()
 
-if einzelnamen_oder_gruppen == '1':
-    print('Soll neu begonnen (1) oder fortgesetzt (2) werden?')
-    neu_oder_fortgesetzt = input()
-    if neu_oder_fortgesetzt == '1':
-        Einzelnamen(list_of_names, sampling)
+if decision == '1':
+    print('Start from scratch (1) or continue with a saved list (2) ?')
+    start_decision = input()
+    if start_decision == '1':
+        single_name(list_of_names, sampling)
     else:
-        alte_Einzelnamen()
+        single_names_old()
 
 else:
-    print('Neue Gruppen (1), oder die vom letzten Mal (2)?')
-    neue_oder_alte_Gruppen = input()
-    if neue_oder_alte_Gruppen == '1':
-        print('Wie viele Gruppen sollen es sein?')
-        Gruppenanzahl = input()
+    print('New groups (1), or saved ones (2)?')
+    start_decision = input()
+    if start_decision == '1':
+        print('How many groups should it be?')
+        number_of_groups = input()
     else:
-        alte_Gruppen()
+        old_groups()
 
 dicts = {}
 
-anzahl_rest = len(list_of_names) % int(Gruppenanzahl) # anzahl_rest ist die Zahl an Schülern, die beim ganzzahligen
-# Teilen von Gesamtschülerzahl durch Gruppenzahl übrigbleibt.
+remainder = len(list_of_names) % int(number_of_groups)
+'''remainder is the number of group members which remains by dividing the number of all group members by the number of groups'''
 
-for i in range((anzahl_rest )): # das sind hier die Gruppen, die einen zusätzlichen Schüler bekommen
-    c = (i+1) + (i + 1) * (len(list_of_names) // int(Gruppenanzahl))  # c ist die obere Schranke der Gruppen mit einem
-    # zusätzlichen Schüler. Für Gruppe 0 (i=0) ergibt sich: 0 + 1 * (Gesamtschülerzahl/Gesamtgruppenzahl (Bsp. 30/4=7) =
-    # 7
-    d = i + i * (len(list_of_names) // int(Gruppenanzahl)) # d ist die untere Schranke der Gruppen mit einem zusätzlichen
-    # Schüler. Bsp. i=0, 30/4: 0 + 0*7 = 0
-    dicts[i] = sampling[d:c] # Werte zum Schlüssel i. Im Beispiel i=0 sind es die Schüler zwischen 0 und 7, für i=1 dann
-    # zwischen 8 und 16 usw.
+for i in range((remainder)): # groups which get an additional member
+    c = (i+1) + (i + 1) * (len(list_of_names) // int(number_of_groups))
+    ''' c is the upper limit for the number of groups
+    with an additional member. For group 0 (i=0) it is: 1 + 1 * (number_of_all_group_members/number_of_groups) 
+    e.g.: 1 + 1*30/4 = 3 '''
+    d = i + i * (len(list_of_names) // int(number_of_groups))
+    '''d is the lower limit of the number of groups with an additional member
+    e.g. (i=0) 0 + 0 * 30/4 = 0 '''
+    dicts[i] = sampling[d:c]
+    ''' values to key i. In the previous example for i=0 the group members 0 to 7, for i=1 members from 8 to 16 etc. '''
 
-for i in range((anzahl_rest), int(Gruppenanzahl)): # Groups without additive student
-    c = anzahl_rest + (i + 1) * (len(list_of_names) // int(Gruppenanzahl)) # c ist die obere Schranke Gruppen
-    # Für Gruppe 2 (i=2) ergibt sich: 2 + (2+1) * (Gesamtschülerzahl/Gesamtgruppenzahl (Bsp. 30/4=7) =
-    # 23
-    d = anzahl_rest + i * (len(list_of_names) // int(Gruppenanzahl)) # d ist die untere Schranke
-    # Bsp. i=2, 30/4: 2 + 2*7 = 16
-    dicts[i] = sampling[d:c] # für 30/4 und i = 2 sind das die Schüler 16 bis 23
+for i in range((remainder), int(number_of_groups)): # groups without additional member
+    c = remainder + (i + 1) * (len(list_of_names) // int(number_of_groups))
+    ''' c is the upper limit of groups
+    for group 2 (i=2) it is: 2 + (2+1) * (number_of_all_group_members/number_of_groups)
+    e.g. c = 2 + 3*(30/4) = 23 '''
+    d = remainder + i * (len(list_of_names) // int(number_of_groups))
+    ''' d is the lower limit
+    example: (i=2) d= 2 + 2*7 = 16'''
+    dicts[i] = sampling[d:c]
+    ''' for 30/4 and i = 2 these are the members 16 to 23'''
 
 print('\n'.join("{}: {}".format(k, v) for k, v in dicts.items()))
 
-gruppenEnde(dicts)
+groups_exit(dicts)
 
 
 
